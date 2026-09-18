@@ -1,2 +1,7 @@
-# cache and other artifacts produced by Lean's Lake build tool
-.lake/
+# Lake build output and release archives
+/.lake/
+/dist/
+
+# Local environment and agent state; the checked-in rule adapters stay tracked
+.env
+.claude/settings.local.json

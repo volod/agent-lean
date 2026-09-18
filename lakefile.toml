@@ -1,0 +1,37 @@
+# Package layout, options and the drivers behind `lake test` and `lake lint`. The release version
+# lives only in AgentLean/BuildInfo.lean.
+name = "agent-lean"
+defaultTargets = ["agent-lean"]
+testDriver = "AgentLeanTest"
+lintDriver = "repo"
+lintDriverArgs = ["lint"]
+
+[leanOptions]
+autoImplicit = false
+relaxedAutoImplicit = false
+linter.missingDocs = true
+
+# Product library; AgentLean.lean imports every module.
+[[lean_lib]]
+name = "AgentLean"
+
+# The command. Main.lean only calls AgentLean.Cli.run.
+[[lean_exe]]
+name = "agent-lean"
+root = "Main"
+
+# `lake test` builds this library; a failing #guard, #guard_msgs, example or #eval fails it.
+[[lean_lib]]
+name = "AgentLeanTest"
+globs = ["AgentLeanTest.+"]
+leanOptions = { linter.missingDocs = false }
+
+# Repository tooling behind `lake exe repo` and `lake lint`; never shipped.
+[[lean_lib]]
+name = "Repo"
+srcDir = "scripts"
+
+[[lean_exe]]
+name = "repo"
+srcDir = "scripts"
+root = "Repo.Main"
